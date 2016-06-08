@@ -1,6 +1,7 @@
 package com.example.fbulou.swipeem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -55,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
         left = (Button) findViewById(R.id.left);
 
         showSwipeCards();
+
+
+        //TODO
+        Intent i = new Intent(this, WishlistActivity.class);
+        startActivity(i);
     }
 
     private void showSwipeCards() {
@@ -96,14 +102,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
+            int i=0;
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 // Ask for more data here
+
 
                 if (itemsInAdapter == 0) {
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
+                    i++;
+                    al.add(new Data("http://placehold.it/120x120&text=NewImage" + i, "New Image "+i));
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
@@ -184,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             if (rowView == null) {
 
                 LayoutInflater inflater = getLayoutInflater();
-                rowView = inflater.inflate(R.layout.item, parent, false);
+                rowView = inflater.inflate(R.layout.item_swipe, parent, false);
                 // configure view holder
                 viewHolder = new MyViewHolder();
                 viewHolder.DataText = (TextView) rowView.findViewById(R.id.bookText);
@@ -197,7 +207,10 @@ public class MainActivity extends AppCompatActivity {
             }
             viewHolder.DataText.setText(parkingList.get(position).getDescription() + "");
 
-            Glide.with(MainActivity.this).load(parkingList.get(position).getImagePath()).into(viewHolder.cardImage);
+            Glide.with(MainActivity.this)
+                    .load(parkingList.get(position).getImagePath())
+                    .centerCrop()
+                    .into(viewHolder.cardImage);
 
             return rowView;
         }
@@ -219,7 +232,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_wishlist) {
+            Intent i = new Intent(this, WishlistActivity.class);
+            startActivity(i);
             return true;
         }
 
