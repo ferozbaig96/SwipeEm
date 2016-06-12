@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab != null;
+        assert fab!=null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //TODO
-        Intent i = new Intent(this, WishlistActivity.class);
+        Intent i = new Intent(this, DetailsActivity.class);
         startActivity(i);
     }
 
@@ -93,12 +93,11 @@ public class MainActivity extends AppCompatActivity {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Toast.makeText(MainActivity.this, "Left!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Toast.makeText(MainActivity.this, "Right!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Added to Wishlist!", Toast.LENGTH_SHORT).show();
             }
 
 

@@ -1,5 +1,6 @@
 package com.example.fbulou.swipeem;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,16 +14,17 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WishlistActivity extends AppCompatActivity {
+public class WishlistActivity extends AppCompatActivity implements WishlistRVAdapter.MyOnClickListener{
 
-    RecyclerView mRecyclerView;
     static WishlistActivity Instance;
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wishlist);
         Instance = this;
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         assert getSupportActionBar() != null;
@@ -93,5 +95,12 @@ public class WishlistActivity extends AppCompatActivity {
         }
 
         return data;
+    }
+
+    @Override
+    public void onClicked(int position) {
+        //TODO get primary key to find the data. pk from fn(String pk)
+
+        startActivity(new Intent(this,DetailsActivity.class));
     }
 }

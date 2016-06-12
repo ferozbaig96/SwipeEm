@@ -3,4 +3,15 @@
     <string name="action_wishlist">Wishist</string>
     <string name="image">image</string>
     <string name="title_activity_wishlist">WishlistActivity</string>
+
+
+    <string name="title_activity_details">DetailsActivity</string>
+    <string name="plus_sign">+</string>
+    <string name="minus_sign">-</string>
+    <string name="demo_leather_shoes">Demo Leather Shoes</string>
+    <string name="qty">QTY</string>
+    <string name="_1">1</string>
+    <string name="mrp_string">MRP - ₹ </string>
+    <string name="buy_now_for_999">Buy Now for ₹ 999</string>
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</string>
 </resources>

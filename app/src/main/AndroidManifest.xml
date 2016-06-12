@@ -30,6 +30,12 @@
             android:label="@string/title_activity_wishlist"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DetailsActivity"
+            android:configChanges="orientation"
+            android:label="@string/title_activity_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

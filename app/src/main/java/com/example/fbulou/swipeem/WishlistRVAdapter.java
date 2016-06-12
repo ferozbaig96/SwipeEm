@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -17,6 +18,10 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
 
     private LayoutInflater inflater;
     List<Information> data = Collections.emptyList();
+
+    public interface MyOnClickListener {
+        public void onClicked(int position);
+    }
 
     public WishlistRVAdapter(Context context, List<Information> data) {
         inflater = LayoutInflater.from(context);
@@ -47,13 +52,17 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
 
     }
 
-
     @Override
     public int getItemCount() {
         return data.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    void delete(int position) {
+        data.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener { // For onClick Events
 
         TextView title;
         ImageView icon;
@@ -63,6 +72,29 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
 
             title = (TextView) itemView.findViewById(R.id.id_RVtitle);
             icon = (ImageView) itemView.findViewById(R.id.id_RVicon);
+
+            itemView.setOnClickListener(this);  //setting clickListener on the whole itemView
+            itemView.setOnLongClickListener(this);    //setting longClickListener on the whole itemView
+        }
+
+        @Override
+        public void onClick(View v) {
+
+           /* int position = getAdapterPosition();
+
+            if (position != -1 && position < data.size()) {
+                Toast.makeText(WishlistActivity.Instance.getInstance(), "Item deleted at position : " + position, Toast.LENGTH_SHORT).show();
+                delete(position);
+            }*/
+
+            WishlistActivity.Instance.onClicked(getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+
+            Toast.makeText(WishlistActivity.Instance.getInstance(), "Long clicked!", Toast.LENGTH_SHORT).show();
+            return true;    //explicitly set to true to make it work
         }
     }
 }
