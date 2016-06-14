@@ -3,8 +3,6 @@ package com.example.fbulou.swipeem;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,13 +12,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -28,7 +27,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button left, right;
+    //Button left, right;
+    LikeButton left, right;
     public static MyAppAdapter myAppAdapter;
     public static MyViewHolder viewHolder;
     private SwipeFlingAdapterView flingContainer;
@@ -41,19 +41,24 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab!=null;
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
+/*
 
         right = (Button) findViewById(R.id.right);
         left = (Button) findViewById(R.id.left);
+*/
+
+        left = (LikeButton) findViewById(R.id.left);
+        right = (LikeButton) findViewById(R.id.right);
 
         showSwipeCards();
 
@@ -101,7 +106,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            int i=0;
+            int i = 0;
+
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 // Ask for more data here
@@ -112,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
                     left.setEnabled(false);
                 } else {
                     i++;
-                    al.add(new Data("http://placehold.it/120x120&text=NewImage" + i, "New Image "+i));
+                    al.add(new Data("http://placehold.it/120x120&text=NewImage" + i, "New Image " + i));
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
@@ -136,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+/*
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +155,39 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 flingContainer.getTopCardListener().selectLeft();
             }
+        });*/
+
+
+        right.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                unLiked(likeButton);
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                likeButton.setLiked(true);
+                flingContainer.getTopCardListener().selectRight();
+
+            }
         });
+
+
+        left.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                unLiked(likeButton);
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                likeButton.setLiked(true);
+                flingContainer.getTopCardListener().selectLeft();
+
+            }
+        });
+
+
     }
 
 

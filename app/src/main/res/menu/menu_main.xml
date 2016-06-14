@@ -5,7 +5,7 @@
     <item
         android:id="@+id/action_wishlist"
         android:orderInCategory="100"
-        android:icon="@android:drawable/ic_menu_agenda"
+        android:icon="@drawable/add_to_bag"
         android:title="@string/action_wishlist"
         app:showAsAction="ifRoom" />
 </menu>
