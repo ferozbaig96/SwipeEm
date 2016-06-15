@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal|bottom"
-    android:layout_marginBottom="20dp"
+    android:layout_marginBottom="5dp"
     android:orientation="horizontal">
 
-    <com.like.LikeButton
-        android:id="@+id/left"
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:icon_size="50dp"
+        android:layout_marginEnd="50dp">
 
-        app:like_drawable="@android:drawable/ic_delete"
-        app:unlike_drawable="@android:drawable/ic_delete" />
+        <com.like.LikeButton
+            android:id="@+id/left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:anim_scale_factor="1.5"
+            app:icon_size="48dp"
 
-    <com.like.LikeButton
-        android:id="@+id/right"
+            app:like_drawable="@drawable/circle_cross_icon"
+            app:unlike_drawable="@drawable/circle_cross_icon" />
+    </FrameLayout>
+
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content">
 
-        app:icon_size="50dp"
-        app:icon_type="heart"
-        app:liked="true" />
+        <com.like.LikeButton
+            android:id="@+id/right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:anim_scale_factor="1.5"
+            app:icon_size="48dp"
+            app:icon_type="heart"
 
+            app:like_drawable="@drawable/heart_icon"
+            app:unlike_drawable="@drawable/heart_icon" />
+    </FrameLayout>
 
 </LinearLayout>

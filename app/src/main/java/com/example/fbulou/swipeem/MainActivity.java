@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,35 +28,20 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Button left, right;
     LikeButton left, right;
     public static MyAppAdapter myAppAdapter;
     public static MyViewHolder viewHolder;
     private SwipeFlingAdapterView flingContainer;
 
+    static int toolbarHeight;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        assert fab != null;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-/*
-
-        right = (Button) findViewById(R.id.right);
-        left = (Button) findViewById(R.id.left);
-*/
 
         left = (LikeButton) findViewById(R.id.left);
         right = (LikeButton) findViewById(R.id.right);
@@ -66,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
         //TODO
         Intent i = new Intent(this, DetailsActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        toolbarHeight = toolbar.getHeight();
     }
 
     private void showSwipeCards() {
@@ -102,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Toast.makeText(MainActivity.this, "Added to Wishlist!", Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(MainActivity.this, "Added to Wishlist!", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, toolbarHeight);
+                toast.show();
             }
 
 
@@ -138,25 +133,9 @@ public class MainActivity extends AppCompatActivity {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
             }
         });
-
-/*
-        right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flingContainer.getTopCardListener().selectRight();
-            }
-        });
-
-        left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                flingContainer.getTopCardListener().selectLeft();
-            }
-        });*/
-
 
         right.setOnLikeListener(new OnLikeListener() {
             @Override
@@ -186,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
 
     }
 

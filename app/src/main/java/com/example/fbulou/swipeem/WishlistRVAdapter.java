@@ -80,7 +80,7 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
         @Override
         public void onClick(View v) {
 
-           /* int position = getAdapterPosition();
+          /*  int position = getAdapterPosition();
 
             if (position != -1 && position < data.size()) {
                 Toast.makeText(WishlistActivity.Instance.getInstance(), "Item deleted at position : " + position, Toast.LENGTH_SHORT).show();
