@@ -14,4 +14,11 @@
     <string name="mrp_string">MRP - ₹ </string>
     <string name="buy_now_for_999">Buy Now for ₹ 999</string>
     <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</string>
+    <string name="title_activity_scroll_fling">ScrollFling</string>
+    <string name="title_activity_shipping">ShippingActivity</string>
+    <string name="proceed">Proceed</string>
+    <string name="title_activity_invoice">InvoiceActivity</string>
+    <string name="checkout">Checkout</string>
+    <string name="_91">+91</string>
+    <string name="delete_from_wishlist">Delete from Wishlist</string>
 </resources>

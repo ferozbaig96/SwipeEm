@@ -36,6 +36,18 @@
             android:label="@string/title_activity_details"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ScrollFling"
+            android:label="@string/title_activity_scroll_fling"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShippingActivity"
+            android:label="@string/title_activity_shipping"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".InvoiceActivity"
+            android:label="@string/title_activity_invoice"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

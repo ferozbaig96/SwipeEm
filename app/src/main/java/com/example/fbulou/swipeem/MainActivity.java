@@ -2,6 +2,7 @@ package com.example.fbulou.swipeem;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -19,10 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,10 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
         showSwipeCards();
 
-
         //TODO
-        Intent i = new Intent(this, DetailsActivity.class);
-        startActivity(i);
+        /*Intent i = new Intent(this, ShippingActivity.class);
+        startActivity(i);*/
     }
 
     @Override
@@ -59,6 +62,42 @@ public class MainActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
 
         toolbarHeight = toolbar.getHeight();
+    }
+
+    public List<Information> loadWishlistPref() {       //loads wishlist products and returns a List of it
+        SharedPreferences sharedPreferences = getSharedPreferences("mPrefs", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String jsonPreferences = sharedPreferences.getString("mWishlistProductsLists", "");
+
+        //For Collections only
+        Type listOfInformationObject = new TypeToken<List<Information>>() {
+        }.getType();
+
+        List<Information> informationList = gson.fromJson(jsonPreferences, listOfInformationObject);
+
+        return informationList;
+    }
+
+    public void saveWishlistPref(Information addedProduct) {        //saves wishlist products in an ArrayList
+        List<Information> myWishlist = loadWishlistPref();
+        if (myWishlist == null)                 // if Wishlist is empty
+            myWishlist = new ArrayList<>();     // Create Wishlist ArrayList
+
+        myWishlist.add(addedProduct);
+
+        SharedPreferences.Editor spEditor = getSharedPreferences("mPrefs", MODE_PRIVATE).edit();      // should use getPreferences for a single value
+        Gson gson = new Gson();
+        String json = gson.toJson(myWishlist);
+
+        spEditor.putString("mWishlistProductsLists", json);
+        spEditor.apply();
+    }
+
+    public void addToWishlist(String imagePath, String description) {
+        Information information = new Information();
+        information.path = imagePath;
+        information.desc = description;
+        saveWishlistPref(information);
     }
 
     private void showSwipeCards() {
@@ -78,12 +117,21 @@ public class MainActivity extends AppCompatActivity {
         flingContainer.setAdapter(myAppAdapter);
 
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+
+            String topView_imagePath, topView_description;
+
             @Override
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
+
+                topView_description = al.get(0).getDescription();           //to get the topmost view's description
+                topView_imagePath = al.get(0).getImagePath();             //to get the topmost view's imagePath
+
                 Log.e("LIST", "removed object!");
                 al.remove(0);
                 myAppAdapter.notifyDataSetChanged();
+
+
             }
 
             @Override
@@ -98,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 Toast toast = Toast.makeText(MainActivity.this, "Added to Wishlist!", Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, toolbarHeight);
                 toast.show();
+
+                addToWishlist(topView_imagePath, topView_description);
             }
 
 
@@ -117,7 +167,6 @@ public class MainActivity extends AppCompatActivity {
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
-
             }
 
             @Override
@@ -148,6 +197,8 @@ public class MainActivity extends AppCompatActivity {
                 likeButton.setLiked(true);
                 flingContainer.getTopCardListener().selectRight();
 
+                View view = flingContainer.getSelectedView();
+                view.findViewById(R.id.item_swipe_left_indicator).setAlpha(1);
             }
         });
 
@@ -163,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
                 likeButton.setLiked(true);
                 flingContainer.getTopCardListener().selectLeft();
 
+                View view = flingContainer.getSelectedView();
+                view.findViewById(R.id.item_swipe_right_indicator).setAlpha(1);
             }
         });
 
@@ -177,17 +230,17 @@ public class MainActivity extends AppCompatActivity {
 
     public class MyAppAdapter extends BaseAdapter {
 
-        public List<Data> parkingList;
+        public List<Data> productList;
         public Context context;
 
         private MyAppAdapter(List<Data> apps, Context context) {
-            this.parkingList = apps;
+            this.productList = apps;
             this.context = context;
         }
 
         @Override
         public int getCount() {
-            return parkingList.size();
+            return productList.size();
         }
 
         @Override
@@ -220,10 +273,10 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 viewHolder = (MyViewHolder) convertView.getTag();
             }
-            viewHolder.DataText.setText(parkingList.get(position).getDescription() + "");
+            viewHolder.DataText.setText(productList.get(position).getDescription() + "");
 
             Glide.with(MainActivity.this)
-                    .load(parkingList.get(position).getImagePath())
+                    .load(productList.get(position).getImagePath())
                     .centerCrop()
                     .into(viewHolder.cardImage);
 
