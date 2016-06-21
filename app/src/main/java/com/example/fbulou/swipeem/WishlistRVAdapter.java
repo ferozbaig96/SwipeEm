@@ -21,7 +21,7 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
     private LayoutInflater inflater;
     List<Information> data = Collections.emptyList();
 
-    static WishlistRVAdapter myRVAdapter;
+    //static WishlistRVAdapter myRVAdapter;
     static Map<Integer, ImageView> posImgMap = new HashMap<>();
     boolean longClickActivated = false;
 
@@ -29,7 +29,7 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
         inflater = LayoutInflater.from(context);
         this.data = data;
 
-        myRVAdapter = this;
+       // myRVAdapter = this;
     }
 
     @Override
@@ -122,7 +122,6 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
 
                     posImgMap.remove(position);
                     data.get(position).isSelected = false;
-
                     tick.setVisibility(View.GONE);
                     Log.e("TAG", "Unselected at pos " + position);
 
@@ -130,7 +129,6 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
 
                     posImgMap.put(position, tick);
                     data.get(position).isSelected = true;
-
                     tick.setVisibility(View.VISIBLE);
                     Log.e("TAG", "Selected at pos " + position);
                 }

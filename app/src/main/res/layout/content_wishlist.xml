@@ -11,6 +11,59 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/id_mRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/empty_wishlist_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/heart_icon" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="#81898c"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:text="Your Wishlist will live here"
+            android:textSize="40sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:textColor="#c981898c"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:text="Find thousands of footwears to buy"
+            android:textSize="25sp" />
+
+        <Button
+            android:id="@+id/start_exploring"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_bg"
+            android:padding="15dp"
+            android:text="Start Exploring"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+    </LinearLayout>
 
 </RelativeLayout>

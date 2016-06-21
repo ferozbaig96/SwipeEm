@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void saveWishlistPref(Information addedProduct) {        //saves wishlist products in an ArrayList
         List<Information> myWishlist = loadWishlistPref();
-        if (myWishlist == null)                 // if Wishlist is empty
+        if (myWishlist == null)                 // if Wishlist is empty (here, it hasn't been created yet)
             myWishlist = new ArrayList<>();     // Create Wishlist ArrayList
 
         myWishlist.add(addedProduct);

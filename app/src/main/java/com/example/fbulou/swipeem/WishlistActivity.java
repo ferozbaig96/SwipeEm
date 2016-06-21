@@ -8,10 +8,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -24,8 +25,13 @@ public class WishlistActivity extends AppCompatActivity {
 
     static WishlistActivity Instance;
     Menu mMenu;
+
     RecyclerView mRecyclerView;
+    WishlistRVAdapter myRVAdapter;
     List<Information> productList;
+
+    LinearLayout emptyWishlistLayout;
+    Button startExploring;
 
     static WishlistActivity getInstance() {
         return Instance;
@@ -53,6 +59,15 @@ public class WishlistActivity extends AppCompatActivity {
         });*/
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_mRecyclerView);
+        emptyWishlistLayout = (LinearLayout) findViewById(R.id.empty_wishlist_layout);
+        startExploring = (Button) findViewById(R.id.start_exploring);
+
+        startExploring.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
@@ -62,15 +77,16 @@ public class WishlistActivity extends AppCompatActivity {
 
         productList = loadWishlistPref();
 
-        if (productList == null) {      // wishlist is empty
-            //TODO show - You have no item in wishlist image
+        if (productList == null || productList.size() == 0) {      // wishlist is empty or it hasn't been created yet
             mRecyclerView.setVisibility(View.GONE);
+            emptyWishlistLayout.setVisibility(View.VISIBLE);
 
         } else {
             mRecyclerView.setVisibility(View.VISIBLE);
+            emptyWishlistLayout.setVisibility(View.GONE);
 
-            WishlistRVAdapter mAdapter = new WishlistRVAdapter(this, productList);
-            mRecyclerView.setAdapter(mAdapter);
+            myRVAdapter = new WishlistRVAdapter(this, productList);
+            mRecyclerView.setAdapter(myRVAdapter);
 
             // mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
             mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
@@ -191,47 +207,40 @@ public class WishlistActivity extends AppCompatActivity {
         for (int i = size - 1; i >= 0; i--) {
 
             int key = keys[i];
-            WishlistRVAdapter.myRVAdapter.data.get(key).isSelected = false;
+            myRVAdapter.data.get(key).isSelected = false;
 
             WishlistRVAdapter.posImgMap.get(key).setVisibility(View.GONE);
             WishlistRVAdapter.posImgMap.remove(key);
 
             if (!performDeselections)                // not deselections, but deletions
             {
-                WishlistRVAdapter.myRVAdapter.data.remove(key);
-                WishlistRVAdapter.myRVAdapter.notifyItemRemoved(key);
+                myRVAdapter.data.remove(key);
+                myRVAdapter.notifyItemRemoved(key);
             }
         }
 
-        if (!performDeselections)               // deletions made. Now saving the remaining wishlist in the WishlistPrefs
-            saveWishlistPref(WishlistRVAdapter.myRVAdapter.data);
+        if (!performDeselections) {
+            saveWishlistPref(myRVAdapter.data);     // deletions made. Now saving the remaining wishlist in the WishlistPrefs
+            emptyWishlistLayout.setVisibility(View.VISIBLE);    //showing 'You have no item in wishlist' image
+        }
 
-        WishlistRVAdapter.myRVAdapter.longClickActivated = false;
+        myRVAdapter.longClickActivated = false;
 
         getSupportActionBar().setTitle("Your Wishlist");
-
-        mMenu.findItem(R.id.action_delete_long_press).
-
-                setVisible(false);
-
-        getSupportActionBar()
-
-                .
-
-                        setDisplayHomeAsUpEnabled(false);
+        mMenu.findItem(R.id.action_delete_long_press).setVisible(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
     }
 
     @Override
     public void onBackPressed() {
-        if (WishlistRVAdapter.myRVAdapter.longClickActivated) {
+        if (myRVAdapter == null) {
+            super.onBackPressed();
 
-            Log.e("TAG", "longClickActivated");
+        } else if (myRVAdapter.longClickActivated) {
             performDeletions(true);
+
         } else {
-
-            Log.e("TAG", "longClickActivated not activated");
-
             super.onBackPressed();
         }
 
