@@ -8,17 +8,22 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 
 public class WishlistActivity extends AppCompatActivity {
 
     static WishlistActivity Instance;
+    Menu mMenu;
     RecyclerView mRecyclerView;
     List<Information> productList;
 
@@ -148,5 +153,87 @@ public class WishlistActivity extends AppCompatActivity {
 
         spEditor.putString("mWishlistProductsLists", json);
         spEditor.apply();
+    }
+
+    //MENUS
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_wishlist, menu);
+        mMenu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_delete_long_press) {
+            performDeletions(false);
+            return true;
+
+        } else if (id == android.R.id.home) {
+            performDeletions(true);     //performing Deselections
+            return true;
+
+        } else
+            return super.onOptionsItemSelected(item);
+    }
+
+    private void performDeletions(boolean performDeselections) {
+
+        int size = WishlistRVAdapter.posImgMap.size();
+
+        Integer keys[] = new Integer[size];
+        WishlistRVAdapter.posImgMap.keySet().toArray(keys);          //getting all the keys and storing it in an array
+        Arrays.sort(keys);
+
+        for (int i = size - 1; i >= 0; i--) {
+
+            int key = keys[i];
+            WishlistRVAdapter.myRVAdapter.data.get(key).isSelected = false;
+
+            WishlistRVAdapter.posImgMap.get(key).setVisibility(View.GONE);
+            WishlistRVAdapter.posImgMap.remove(key);
+
+            if (!performDeselections)                // not deselections, but deletions
+            {
+                WishlistRVAdapter.myRVAdapter.data.remove(key);
+                WishlistRVAdapter.myRVAdapter.notifyItemRemoved(key);
+            }
+        }
+
+        if (!performDeselections)               // deletions made. Now saving the remaining wishlist in the WishlistPrefs
+            saveWishlistPref(WishlistRVAdapter.myRVAdapter.data);
+
+        WishlistRVAdapter.myRVAdapter.longClickActivated = false;
+
+        getSupportActionBar().setTitle("Your Wishlist");
+
+        mMenu.findItem(R.id.action_delete_long_press).
+
+                setVisible(false);
+
+        getSupportActionBar()
+
+                .
+
+                        setDisplayHomeAsUpEnabled(false);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (WishlistRVAdapter.myRVAdapter.longClickActivated) {
+
+            Log.e("TAG", "longClickActivated");
+            performDeletions(true);
+        } else {
+
+            Log.e("TAG", "longClickActivated not activated");
+
+            super.onBackPressed();
+        }
+
     }
 }

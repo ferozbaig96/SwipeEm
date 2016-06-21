@@ -18,6 +18,8 @@ import java.util.List;
 public class DetailsActivity extends AppCompatActivity {
 
     static DetailsActivity Instance;
+    Menu mMenu;
+
     int currentWishlistPosition;
     ImageView image;
     TextView description, qty, mrp, productName, shippingCharges, cashOnDelivery, brand, material, estimatedArrival;
@@ -144,6 +146,7 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_details, menu);
+        mMenu = menu;
         return true;
     }
 

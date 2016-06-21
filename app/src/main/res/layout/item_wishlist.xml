@@ -21,6 +21,17 @@
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher" />
 
+        <!--tick-->
+        <ImageView
+            android:id="@+id/tick"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:contentDescription="@string/image"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone" />
+
         <!--title-->
         <TextView
             android:id="@+id/id_RVtitle"

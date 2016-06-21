@@ -1,11 +1,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.fbulou.swipeem.DetailsActivity">
+    tools:context="com.example.fbulou.swipeem.WishlistActivity">
+
     <item
-        android:id="@+id/action_delete_from_wishlist"
-        android:orderInCategory="100"
+        android:id="@+id/action_delete_long_press"
         android:icon="@drawable/ic_delete"
+        android:orderInCategory="101"
+        android:visible="false"
         android:title="@string/delete_from_wishlist"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

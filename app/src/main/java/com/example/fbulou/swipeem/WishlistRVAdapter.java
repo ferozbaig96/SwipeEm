@@ -2,27 +2,34 @@ package com.example.fbulou.swipeem;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.MyViewHolder> {
 
     private LayoutInflater inflater;
     List<Information> data = Collections.emptyList();
 
+    static WishlistRVAdapter myRVAdapter;
+    static Map<Integer, ImageView> posImgMap = new HashMap<>();
+    boolean longClickActivated = false;
+
     public WishlistRVAdapter(Context context, List<Information> data) {
         inflater = LayoutInflater.from(context);
         this.data = data;
 
+        myRVAdapter = this;
     }
 
     @Override
@@ -70,12 +77,14 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
 
         TextView title;
         ImageView icon;
+        ImageView tick;
 
         public MyViewHolder(View itemView) {
             super(itemView);
 
             title = (TextView) itemView.findViewById(R.id.id_RVtitle);
             icon = (ImageView) itemView.findViewById(R.id.id_RVicon);
+            tick = (ImageView) itemView.findViewById(R.id.tick);
 
             itemView.setOnClickListener(this);  //setting clickListener on the whole itemView
             itemView.setOnLongClickListener(this);    //setting longClickListener on the whole itemView
@@ -84,20 +93,15 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
         @Override
         public void onClick(View v) {
 
-          /*  int position = getAdapterPosition();
-
-            if (position != -1 && position < data.size()) {
-                Toast.makeText(WishlistActivity.Instance.getInstance(), "Item deleted at position : " + position, Toast.LENGTH_SHORT).show();
-                delete(position);
-            }*/
-
-            WishlistActivity.Instance.onClicked(getAdapterPosition());
+            if (longClickActivated) {
+                int position = getAdapterPosition();
+                performSelections(position);
+            } else
+                WishlistActivity.Instance.onClicked(getAdapterPosition());
         }
 
         @Override
         public boolean onLongClick(View v) {
-
-            Toast.makeText(WishlistActivity.getInstance(), "Long clicked!", Toast.LENGTH_SHORT).show();
 
           /*  int position = getAdapterPosition();
 
@@ -106,8 +110,45 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
                 delete(position);
             }*/
 
-            return true;    //explicitly set to true to make it work
+            longClickActivated = true;
+            int position = getAdapterPosition();
+            performSelections(position);
+            return true;         //explicitly set to true to make it work        }
+        }
+
+        private void performSelections(int position) {
+            if (position != -1 && position < data.size()) {
+                if (data.get(position).isSelected) {
+
+                    posImgMap.remove(position);
+                    data.get(position).isSelected = false;
+
+                    tick.setVisibility(View.GONE);
+                    Log.e("TAG", "Unselected at pos " + position);
+
+                } else {
+
+                    posImgMap.put(position, tick);
+                    data.get(position).isSelected = true;
+
+                    tick.setVisibility(View.VISIBLE);
+                    Log.e("TAG", "Selected at pos " + position);
+                }
+            }
+
+            if (posImgMap.size() == 0) {
+                longClickActivated = false;
+                WishlistActivity.getInstance().mMenu.findItem(R.id.action_delete_long_press).setVisible(false);
+                WishlistActivity.getInstance().getSupportActionBar().setTitle("Your Wishlist");
+                WishlistActivity.getInstance().getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+            } else {
+                WishlistActivity.getInstance().mMenu.findItem(R.id.action_delete_long_press).setVisible(true);
+                WishlistActivity.getInstance().getSupportActionBar().setTitle("" + posImgMap.size());
+                WishlistActivity.getInstance().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+
         }
     }
-}
 
+}
