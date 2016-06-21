@@ -14,7 +14,7 @@ public class InvoiceActivity extends AppCompatActivity {
 
     ImageView image;
     TextView productName, qty, mrp, shippingCharges, tax, amount;
-    TextView fullname, phoneno, shippingaddress, pincode, city;
+    TextView fullname, phoneno, shippingaddress, pincode, city, state;
     Button btn_checkout;
 
     @Override
@@ -49,17 +49,17 @@ public class InvoiceActivity extends AppCompatActivity {
         shippingaddress = (TextView) findViewById(R.id.shipping_address_invoice);
         pincode = (TextView) findViewById(R.id.pincode_invoice);
         city = (TextView) findViewById(R.id.city_invoice);
+        state = (TextView) findViewById(R.id.state_invoice);
 
         btn_checkout = (Button) findViewById(R.id.btn_checkout);
 
-
-       /* DetailsActivity detailsActivity = DetailsActivity.getInstance();
+        DetailsActivity detailsActivity = DetailsActivity.getInstance();
 
         Drawable drawable = detailsActivity.image.getDrawable();
         image.setImageDrawable(drawable);
 
         productName.setText(detailsActivity.productName.getText());
-        qty.setText(detailsActivity.qty.getText());
+        // qty.setText(detailsActivity.qty.getText());
         mrp.setText(detailsActivity.mrp.getText());
         shippingCharges.setText(detailsActivity.shippingCharges.getText());
 
@@ -69,7 +69,8 @@ public class InvoiceActivity extends AppCompatActivity {
         phoneno.setText(shippingActivity.phoneno.getText());
         shippingaddress.setText(shippingActivity.shippingaddress.getText());
         pincode.setText(shippingActivity.pincode.getText());
-        city.setText(shippingActivity.city.getText());*/
+        city.setText(shippingActivity.city.getText());
+        state.setText(shippingActivity.state.getText());
 
     }
 

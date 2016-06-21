@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">SwipeEm</string>
-    <string name="action_wishlist">Wishist</string>
+    <string name="action_wishlist">Wishlist</string>
     <string name="image">image</string>
     <string name="title_activity_wishlist">WishlistActivity</string>
 

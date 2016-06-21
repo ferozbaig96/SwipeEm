@@ -221,7 +221,9 @@ public class WishlistActivity extends AppCompatActivity {
 
         if (!performDeselections) {
             saveWishlistPref(myRVAdapter.data);     // deletions made. Now saving the remaining wishlist in the WishlistPrefs
-            emptyWishlistLayout.setVisibility(View.VISIBLE);    //showing 'You have no item in wishlist' image
+
+            if (myRVAdapter.data.size() == 0)       //wishlist empty
+                emptyWishlistLayout.setVisibility(View.VISIBLE);    //showing 'You have no item in wishlist' image
         }
 
         myRVAdapter.longClickActivated = false;

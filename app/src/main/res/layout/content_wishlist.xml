@@ -38,7 +38,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:paddingTop="10dp"
-            android:text="Your Wishlist will live here"
+            android:text="Your Wishlist will appear here"
             android:textSize="40sp" />
 
         <TextView

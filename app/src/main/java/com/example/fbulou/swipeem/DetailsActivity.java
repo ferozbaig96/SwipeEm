@@ -22,8 +22,12 @@ public class DetailsActivity extends AppCompatActivity {
 
     int currentWishlistPosition;
     ImageView image;
-    TextView description, qty, mrp, productName, shippingCharges, cashOnDelivery, brand, material, estimatedArrival;
-    Button qtyAdd, qtySub, btn_buy;
+    TextView description, mrp, productName, shippingCharges, cashOnDelivery, brand, material, estimatedArrival;
+
+    /*TextView qty;
+    Button qtyAdd, qtySub;*/
+
+    Button btn_buy;
     int price_int;
 
     public static DetailsActivity getInstance() {
@@ -61,12 +65,12 @@ public class DetailsActivity extends AppCompatActivity {
         image = (ImageView) findViewById(R.id.image_detail);
 
         description = (TextView) findViewById(R.id.description_detail);
-        qty = (TextView) findViewById(R.id.qty);
+        //  qty = (TextView) findViewById(R.id.qty);
         mrp = (TextView) findViewById(R.id.mrp);
         productName = (TextView) findViewById(R.id.product_name);
 
-        qtyAdd = (Button) findViewById(R.id.qty_add);
-        qtySub = (Button) findViewById(R.id.qty_sub);
+        // qtyAdd = (Button) findViewById(R.id.qty_add);
+        // qtySub = (Button) findViewById(R.id.qty_sub);
         btn_buy = (Button) findViewById(R.id.btn_buy);
 
         shippingCharges = (TextView) findViewById(R.id.shipping_charges);
@@ -85,7 +89,7 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        qtyAdd.setOnClickListener(new View.OnClickListener() {
+       /* qtyAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int q = Integer.valueOf(qty.getText().toString());
@@ -108,7 +112,7 @@ public class DetailsActivity extends AppCompatActivity {
                     btn_buy.setText("Buy Now for ₹ " + (q - 1) * price_int);
                 }
             }
-        });
+        });*/
 
         btn_buy.setOnClickListener(new View.OnClickListener() {
             @Override
