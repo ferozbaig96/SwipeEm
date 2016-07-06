@@ -21,4 +21,11 @@
     <string name="checkout">Checkout</string>
     <string name="_91">+91</string>
     <string name="delete_from_wishlist">Delete from Wishlist</string>
+    <string name="full_name">Full Name</string>
+    <string name="phone_no">Phone No.</string>
+    <string name="email">Email</string>
+    <string name="city">City</string>
+    <string name="shipping_address">Shipping Address</string>
+    <string name="state">State</string>
+    <string name="pincode_6_digits">Pincode (6 digits)</string>
 </resources>

@@ -1,13 +1,16 @@
 package com.example.fbulou.swipeem;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,10 +19,17 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.kogitune.activity_transition.ActivityTransitionLauncher;
+import com.transitionseverywhere.Explode;
+import com.transitionseverywhere.Transition;
+import com.transitionseverywhere.TransitionManager;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
+
+import io.codetail.animation.SupportAnimator;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class WishlistActivity extends AppCompatActivity {
 
@@ -31,7 +41,7 @@ public class WishlistActivity extends AppCompatActivity {
     List<Information> productList;
 
     LinearLayout emptyWishlistLayout;
-    Button startExploring;
+    Button btnStartExploring;
 
     static WishlistActivity getInstance() {
         return Instance;
@@ -45,6 +55,10 @@ public class WishlistActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        //Adding font
+        ChangeMyToolbarFont.apply(this, getAssets(), toolbar, "Courgette-Regular.otf");
+
         assert getSupportActionBar() != null;
         getSupportActionBar().setTitle("Your Wishlist");
 
@@ -60,15 +74,20 @@ public class WishlistActivity extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_mRecyclerView);
         emptyWishlistLayout = (LinearLayout) findViewById(R.id.empty_wishlist_layout);
-        startExploring = (Button) findViewById(R.id.start_exploring);
+        btnStartExploring = (Button) findViewById(R.id.start_exploring);
 
-        startExploring.setOnClickListener(new View.OnClickListener() {
+        btnStartExploring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                back();
             }
         });
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     @Override
@@ -137,15 +156,61 @@ public class WishlistActivity extends AppCompatActivity {
         return data;
     }*/
 
-    public void onClicked(int position) {
+    public void onClicked(int position, final View view) {
         //TODO get primary key to find the data. pk from fn(String pk)
 
-        Intent intent = new Intent(this, DetailsActivity.class);
+        final Intent intent = new Intent(WishlistActivity.this, DetailsActivity.class);
         intent.putExtra("imagePath", productList.get(position).path);
         intent.putExtra("title", productList.get(position).desc);
         intent.putExtra("currentWishlistPosition", position);
 
-        startActivity(intent);
+        // save rect of view in screen coordinates
+        final Rect viewRect = new Rect();
+        view.getGlobalVisibleRect(viewRect);
+
+        // create Explode transition with epicenter
+        Transition explode = new Explode()
+                .setEpicenterCallback(new Transition.EpicenterCallback() {
+                    @Override
+                    public Rect onGetEpicenter(Transition transition) {
+                        return viewRect;
+                    }
+                });
+        explode.setDuration(350);
+
+        explode.addListener(new Transition.TransitionListener() {
+            @Override
+            public void onTransitionStart(Transition transition) {
+                Log.e("TAG", "Explode Transition Start in WishlistActivity");
+            }
+
+            @Override
+            public void onTransitionEnd(Transition transition) {
+                ActivityTransitionLauncher.with(WishlistActivity.this).from(view).launch(intent);
+                Log.e("TAG", "Explode Transition End in  WishlistActivity");
+            }
+
+            @Override
+            public void onTransitionCancel(Transition transition) {
+            }
+
+            @Override
+            public void onTransitionPause(Transition transition) {
+
+            }
+
+            @Override
+            public void onTransitionResume(Transition transition) {
+            }
+        });
+
+        TransitionManager.beginDelayedTransition(mRecyclerView, explode);
+        // remove all views from Recycler View
+        mRecyclerView.setAdapter(null);
+
+
+        // startActivity(intent);
+        //  ActivityTransitionLauncher.with(WishlistActivity.this).from(view).launch(intent);
     }
 
     public List<Information> loadWishlistPref() {       //loads wishlist products
@@ -185,7 +250,7 @@ public class WishlistActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_delete_long_press) {
-            performDeletions(false);
+            performDeletions(false);     //performing Deletions
             return true;
 
         } else if (id == android.R.id.home) {
@@ -198,19 +263,39 @@ public class WishlistActivity extends AppCompatActivity {
 
     private void performDeletions(boolean performDeselections) {
 
-        int size = WishlistRVAdapter.posImgMap.size();
+        int size = WishlistRVAdapter.posTickMap.size();
 
         Integer keys[] = new Integer[size];
-        WishlistRVAdapter.posImgMap.keySet().toArray(keys);          //getting all the keys and storing it in an array
+        WishlistRVAdapter.posTickMap.keySet().toArray(keys);          //getting all the keys and storing it in an array
         Arrays.sort(keys);
 
         for (int i = size - 1; i >= 0; i--) {
 
-            int key = keys[i];
+            final int key = keys[i];
             myRVAdapter.data.get(key).isSelected = false;
 
-            WishlistRVAdapter.posImgMap.get(key).setVisibility(View.GONE);
-            WishlistRVAdapter.posImgMap.remove(key);
+            //hiding the tick and  WishlistRVAdapter.posTickMap.remove(key)
+            SupportAnimator animator = myRVAdapter.showCircularReveal(WishlistRVAdapter.posTickMap.get(key), 200, false);
+            animator.addListener(new SupportAnimator.AnimatorListener() {
+                @Override
+                public void onAnimationStart() {
+                }
+
+                @Override
+                public void onAnimationEnd() {
+                    WishlistRVAdapter.posTickMap.get(key).setVisibility(View.INVISIBLE);
+                    WishlistRVAdapter.posTickMap.remove(key);   //IMPORTANT! To be done after animation end, otherwise NullPointerException
+                }
+
+                @Override
+                public void onAnimationCancel() {
+                }
+
+                @Override
+                public void onAnimationRepeat() {
+                }
+            });
+            animator.start();
 
             if (!performDeselections)                // not deselections, but deletions
             {
@@ -236,15 +321,41 @@ public class WishlistActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (myRVAdapter == null) {
-            super.onBackPressed();
+        if (myRVAdapter == null) {      //null should be checked first before longClickActivated to avoid NullPointerException
+            back();
 
         } else if (myRVAdapter.longClickActivated) {
             performDeletions(true);
 
         } else {
-            super.onBackPressed();
+            back();
         }
 
     }
+
+    private void back() {
+        SupportAnimator animator = MainActivity.Instance.showFullCircularReveal(MainActivity.Instance.y, 400, false, true, false);
+        animator.addListener(new SupportAnimator.AnimatorListener() {
+            @Override
+            public void onAnimationStart() {
+                finish();
+            }
+
+            @Override
+            public void onAnimationEnd() {
+            }
+
+            @Override
+            public void onAnimationCancel() {
+            }
+
+            @Override
+            public void onAnimationRepeat() {
+            }
+        });
+
+        animator.start();
+    }
+
+
 }

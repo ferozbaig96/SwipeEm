@@ -3,16 +3,19 @@ package com.example.fbulou.swipeem;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -30,7 +33,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
+
 public class MainActivity extends AppCompatActivity {
+
+    static MainActivity Instance;
+    static int page = 0;
+    ArrayList<Data> al;
 
     LikeButton left, right;
     public static MyAppAdapter myAppAdapter;
@@ -39,22 +49,35 @@ public class MainActivity extends AppCompatActivity {
 
     static int toolbarHeight;
     Toolbar toolbar;
+    View y;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Instance = this;
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Adding font
+        ChangeMyToolbarFont.apply(this, getAssets(), toolbar, "Courgette-Regular.otf");
+
+       /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        assert fab != null;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });*/
+
         left = (LikeButton) findViewById(R.id.left);
         right = (LikeButton) findViewById(R.id.right);
+        y = findViewById(R.id.y);
 
         showSwipeCards();
-
-        //TODO
-        /*Intent i = new Intent(this, ShippingActivity.class);
-        startActivity(i);*/
     }
 
     @Override
@@ -62,6 +85,12 @@ public class MainActivity extends AppCompatActivity {
         super.onWindowFocusChanged(hasFocus);
 
         toolbarHeight = toolbar.getHeight();
+    }
+
+    private void loadMoreData(int page) {
+        for (int i = 1; i <= 6; i++)
+            al.add(new Data("http://placehold.it/300x200&text=NewImage" + i, "Page " + page + " New Image " + i));
+
     }
 
     public List<Information> loadWishlistPref() {       //loads wishlist products and returns a List of it
@@ -105,7 +134,9 @@ public class MainActivity extends AppCompatActivity {
         //add the view via xml or programmatically
         flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
-        final ArrayList<Data> al = new ArrayList<>();
+        al = new ArrayList<>();
+        //TODO get page 0 data
+
         al.add(new Data("http://i.ytimg.com/vi/PnxsTxV8y3g/maxresdefault.jpg", "Image 1"));
         al.add(new Data("http://i.imgur.com/Lq7dyu0.jpg", "Image 2"));
         al.add(new Data("http://i.ytimg.com/vi/PnxsTxV8y3g/maxresdefault.jpg", "Image 3"));
@@ -150,20 +181,16 @@ public class MainActivity extends AppCompatActivity {
                 addToWishlist(topView_imagePath, topView_description);
             }
 
-
-            int i = 0;
-
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 // Ask for more data here
-
 
                 if (itemsInAdapter == 0) {
                     right.setEnabled(false);
                     left.setEnabled(false);
                 } else {
-                    i++;
-                    al.add(new Data("http://placehold.it/120x120&text=NewImage" + i, "New Image " + i));
+                    page++;
+                    loadMoreData(page);
                     right.setEnabled(true);
                     left.setEnabled(true);
                 }
@@ -172,9 +199,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScroll(float scrollProgressPercent) {
                 View view = flingContainer.getSelectedView();
-                view.findViewById(R.id.item_swipe_right_indicator).setAlpha(scrollProgressPercent < 0 ? -scrollProgressPercent : 0);
-                view.findViewById(R.id.item_swipe_left_indicator).setAlpha(scrollProgressPercent > 0 ? scrollProgressPercent : 0);
 
+                try {
+                    view.findViewById(R.id.item_swipe_right_indicator).setAlpha(scrollProgressPercent < 0 ? -scrollProgressPercent : 0);
+                    view.findViewById(R.id.item_swipe_left_indicator).setAlpha(scrollProgressPercent > 0 ? scrollProgressPercent : 0);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -221,6 +252,79 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    // View v is a 1dp x 1dp view which is fully revealed in circular fashion
+    public SupportAnimator showFullCircularReveal(final View v, long duration, boolean show, boolean top, boolean left) {
+
+        int cx = left ? v.getLeft() : v.getRight();
+        int cy = top ? v.getTop() : v.getBottom();
+
+        final ViewGroup.LayoutParams layoutParams = v.getLayoutParams();
+        layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        v.setLayoutParams(layoutParams);
+
+        float radius = (float) Math.hypot(getEffectiveHeight(), getEffectiveWidth());
+
+        SupportAnimator animator;
+
+        if (show) {
+            animator = ViewAnimationUtils.createCircularReveal(v, cx, cy, 70, radius);
+        } else {
+            animator = ViewAnimationUtils.createCircularReveal(v, cx, cy, radius, 0);
+
+
+            animator.addListener(new SupportAnimator.AnimatorListener() {
+                @Override
+                public void onAnimationStart() {
+                }
+
+                @Override
+                public void onAnimationEnd() {
+                    layoutParams.height = 1;
+                    layoutParams.width = 1;
+                    v.setLayoutParams(layoutParams);
+                }
+
+                @Override
+                public void onAnimationCancel() {
+                }
+
+                @Override
+                public void onAnimationRepeat() {
+                }
+            });
+        }
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.setDuration(duration);
+        return animator;
+    }
+
+    public int getEffectiveHeight() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int totalHeight = size.y;
+
+        return totalHeight - getStatusbarHeight();
+    }
+
+    public int getEffectiveWidth() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size.x;
+    }
+
+    public int getStatusbarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+
+        if (resourceId > 0)
+            result = getResources().getDimensionPixelSize(resourceId);
+
+        return result;
+    }
+
 
     public static class MyViewHolder {
         public static FrameLayout background;
@@ -258,7 +362,6 @@ public class MainActivity extends AppCompatActivity {
 
             View rowView = convertView;
 
-
             if (rowView == null) {
 
                 LayoutInflater inflater = getLayoutInflater();
@@ -278,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
             Glide.with(MainActivity.this)
                     .load(productList.get(position).getImagePath())
                     .centerCrop()
+                    .placeholder(R.drawable.default_img_300x200)
                     .into(viewHolder.cardImage);
 
             return rowView;
@@ -294,15 +398,31 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_wishlist) {
-            Intent i = new Intent(this, WishlistActivity.class);
-            startActivity(i);
+
+            SupportAnimator animator = showFullCircularReveal(y, 400, true, true, false);
+            animator.addListener(new SupportAnimator.AnimatorListener() {
+                @Override
+                public void onAnimationStart() {
+                }
+
+                @Override
+                public void onAnimationEnd() {
+                    startActivity(new Intent(Instance, WishlistActivity.class));
+                }
+
+                @Override
+                public void onAnimationCancel() {
+                }
+
+                @Override
+                public void onAnimationRepeat() {
+                }
+            });
+            animator.start();
             return true;
         }
 

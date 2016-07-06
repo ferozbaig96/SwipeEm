@@ -19,18 +19,23 @@
             android:background="#fff"
             android:contentDescription="@string/image"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/default_img" />
 
         <!--tick-->
-        <ImageView
-            android:id="@+id/tick"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+        <io.codetail.widget.RevealFrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:contentDescription="@string/image"
-            android:src="@drawable/ic_check_circle"
-            android:visibility="gone" />
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:id="@+id/tick"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/image"
+                android:src="@drawable/ic_check_circle"
+                android:visibility="invisible" />
+        </io.codetail.widget.RevealFrameLayout>
 
         <!--title-->
         <TextView

@@ -5,8 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
+        android:name=".getMyApplicationContext.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/s1"
         android:label="@string/app_name"
@@ -38,16 +40,22 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ScrollFling"
+            android:configChanges="orientation"
             android:label="@string/title_activity_scroll_fling"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ShippingActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_shipping"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".InvoiceActivity"
+            android:configChanges="orientation"
             android:label="@string/title_activity_invoice"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

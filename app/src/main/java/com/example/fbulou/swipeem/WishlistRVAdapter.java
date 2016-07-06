@@ -1,35 +1,40 @@
 package com.example.fbulou.swipeem;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.codetail.animation.SupportAnimator;
+import io.codetail.animation.ViewAnimationUtils;
+
 public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.MyViewHolder> {
 
     private LayoutInflater inflater;
     List<Information> data = Collections.emptyList();
 
-    //static WishlistRVAdapter myRVAdapter;
-    static Map<Integer, ImageView> posImgMap = new HashMap<>();
+    static Map<Integer, ImageView> posTickMap = new HashMap<>();     // ImageView contains tick icon
     boolean longClickActivated = false;
 
     public WishlistRVAdapter(Context context, List<Information> data) {
         inflater = LayoutInflater.from(context);
         this.data = data;
-
-       // myRVAdapter = this;
     }
 
     @Override
@@ -44,14 +49,11 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
         Information curObj = data.get(position);
         holder.title.setText(curObj.desc);
 
-        //TODO
-        int size = holder.icon.getContext().getResources().getDimensionPixelSize(R.dimen.item_height);
-
         Glide.with(WishlistActivity.getInstance())
                 .load(curObj.path)
-                .override(size, size)
-                .centerCrop()
                 .placeholder(R.drawable.default_img)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)        //cache original sized image
+                .centerCrop()
                 .into(holder.icon);
 
     }
@@ -97,7 +99,7 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
                 int position = getAdapterPosition();
                 performSelections(position);
             } else
-                WishlistActivity.Instance.onClicked(getAdapterPosition());
+                WishlistActivity.Instance.onClicked(getAdapterPosition(), v);
         }
 
         @Override
@@ -113,28 +115,70 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
             longClickActivated = true;
             int position = getAdapterPosition();
             performSelections(position);
-            return true;         //explicitly set to true to make it work        }
+            return true;         //explicitly set to true to make it work
         }
 
         private void performSelections(int position) {
             if (position != -1 && position < data.size()) {
                 if (data.get(position).isSelected) {
 
-                    posImgMap.remove(position);
+                    posTickMap.remove(position);
                     data.get(position).isSelected = false;
-                    tick.setVisibility(View.GONE);
+
+                    SupportAnimator animator = showCircularReveal(tick, 200, false);
+                    animator.addListener(new SupportAnimator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart() {
+                        }
+
+                        @Override
+                        public void onAnimationEnd() {
+                            tick.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationCancel() {
+                        }
+
+                        @Override
+                        public void onAnimationRepeat() {
+                        }
+                    });
+                    animator.start();
+
                     Log.e("TAG", "Unselected at pos " + position);
 
                 } else {
 
-                    posImgMap.put(position, tick);
+                    posTickMap.put(position, tick);
                     data.get(position).isSelected = true;
-                    tick.setVisibility(View.VISIBLE);
+
+                    SupportAnimator animator = showCircularReveal(tick, 200, true);
+                    animator.addListener(new SupportAnimator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart() {
+                            tick.setVisibility(View.VISIBLE);
+                        }
+
+                        @Override
+                        public void onAnimationEnd() {
+                        }
+
+                        @Override
+                        public void onAnimationCancel() {
+                        }
+
+                        @Override
+                        public void onAnimationRepeat() {
+                        }
+                    });
+                    animator.start();
+
                     Log.e("TAG", "Selected at pos " + position);
                 }
             }
 
-            if (posImgMap.size() == 0) {
+            if (posTickMap.size() == 0) {
                 longClickActivated = false;
                 WishlistActivity.getInstance().mMenu.findItem(R.id.action_delete_long_press).setVisible(false);
                 WishlistActivity.getInstance().getSupportActionBar().setTitle("Your Wishlist");
@@ -142,11 +186,28 @@ public class WishlistRVAdapter extends RecyclerView.Adapter<WishlistRVAdapter.My
 
             } else {
                 WishlistActivity.getInstance().mMenu.findItem(R.id.action_delete_long_press).setVisible(true);
-                WishlistActivity.getInstance().getSupportActionBar().setTitle("" + posImgMap.size());
+                WishlistActivity.getInstance().getSupportActionBar().setTitle("" + posTickMap.size());
                 WishlistActivity.getInstance().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
 
         }
+    }
+
+    public SupportAnimator showCircularReveal(View v, long duration, boolean show) {
+
+        int cx = (v.getLeft() + v.getRight()) / 2;
+        int cy = (v.getTop() + v.getBottom()) / 2;
+        float radius = (float) Math.hypot(v.getWidth() / 2, v.getHeight() / 2);
+        SupportAnimator animator;
+
+        if (show)
+            animator = ViewAnimationUtils.createCircularReveal(v, cx, cy, 0, radius);
+        else
+            animator = ViewAnimationUtils.createCircularReveal(v, cx, cy, radius, 0);
+
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
+        animator.setDuration(duration);
+        return animator;
     }
 
 }

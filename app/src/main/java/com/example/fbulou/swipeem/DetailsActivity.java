@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.kogitune.activity_transition.ActivityTransition;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     int currentWishlistPosition;
     ImageView image;
-    TextView description, mrp, productName, shippingCharges, cashOnDelivery, brand, material, estimatedArrival;
+    TextView description, mrp, productName, shippingCharges, cashOnDelivery, brand, material, gender, estimatedArrival;
 
     /*TextView qty;
     Button qtyAdd, qtySub;*/
@@ -39,9 +41,14 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        ActivityTransition.with(getIntent()).to(findViewById(R.id.image_detail)).duration(400).start(savedInstanceState);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Instance = this;
+        //Adding font
+        ChangeMyToolbarFont.apply(this, getAssets(), toolbar, "Courgette-Regular.otf");
 
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -49,11 +56,6 @@ public class DetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
-                *//*Glide.with(Instance)
-                        .load("http://i.ytimg.com/vi/PnxsTxV8y3g/maxresdefault.jpg")
-                        .centerCrop()
-                        .into(image);*//*
 
             }
         });*/
@@ -77,6 +79,7 @@ public class DetailsActivity extends AppCompatActivity {
         cashOnDelivery = (TextView) findViewById(R.id.cash_on_delivery);
         brand = (TextView) findViewById(R.id.brand);
         material = (TextView) findViewById(R.id.material);
+        gender = (TextView) findViewById(R.id.gender);
         estimatedArrival = (TextView) findViewById(R.id.estimated_arrival);
 
         price_int = 999;    //DEMO
@@ -85,6 +88,8 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Instance, ScrollFling.class);
+                //TODO get full size image
+                intent.putExtra("imagePath", getIntent().getStringExtra("imagePath"));
                 startActivity(intent);
             }
         });
@@ -124,10 +129,6 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-        //Adding font
-       /* Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Roboto-Regular.ttf");
-        productName.setTypeface(custom_font);
-*/
 
         assignProductValues();
     }
@@ -140,9 +141,13 @@ public class DetailsActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(intent.getStringExtra("imagePath"))
                 .placeholder(R.drawable.default_img)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                //  .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .centerCrop()
                 .into(image);
+
         productName.setText(intent.getStringExtra("title"));
+
     }
 
     //MENUS

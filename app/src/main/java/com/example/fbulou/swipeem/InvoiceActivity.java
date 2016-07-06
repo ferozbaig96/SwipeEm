@@ -10,11 +10,9 @@ import android.widget.TextView;
 
 public class InvoiceActivity extends AppCompatActivity {
 
-    //TODO variables
-
     ImageView image;
     TextView productName, qty, mrp, shippingCharges, tax, amount;
-    TextView fullname, phoneno, shippingaddress, pincode, city, state;
+    TextView fullname, phoneno, email, shippingaddress, pincode, city, state;
     Button btn_checkout;
 
     @Override
@@ -23,6 +21,8 @@ public class InvoiceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_invoice);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //Adding font
+        ChangeMyToolbarFont.apply(this, getAssets(), toolbar, "Courgette-Regular.otf");
 
        /* FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -46,6 +46,7 @@ public class InvoiceActivity extends AppCompatActivity {
         amount = (TextView) findViewById(R.id.amount);
         fullname = (TextView) findViewById(R.id.full_name_invoice);
         phoneno = (TextView) findViewById(R.id.phone_no_invoice);
+        email = (TextView) findViewById(R.id.email_invoice);
         shippingaddress = (TextView) findViewById(R.id.shipping_address_invoice);
         pincode = (TextView) findViewById(R.id.pincode_invoice);
         city = (TextView) findViewById(R.id.city_invoice);
@@ -67,6 +68,7 @@ public class InvoiceActivity extends AppCompatActivity {
 
         fullname.setText(shippingActivity.fullname.getText());
         phoneno.setText(shippingActivity.phoneno.getText());
+        email.setText(shippingActivity.email.getText());
         shippingaddress.setText(shippingActivity.shippingaddress.getText());
         pincode.setText(shippingActivity.pincode.getText());
         city.setText(shippingActivity.city.getText());
