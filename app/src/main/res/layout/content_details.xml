@@ -3,401 +3,373 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.fbulou.swipeem.DetailsActivity"
+    tools:showIn="@layout/activity_details">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/btn_buy_ripple">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
             android:orientation="vertical">
 
-            <!--<FrameLayout
+            <!--  <ImageView
+                  android:id="@+id/image_detail"
+                  android:layout_width="match_parent"
+                  android:layout_height="300dp"
+                  android:contentDescription="@string/image"
+                  android:scaleType="centerCrop"
+                  android:src="@drawable/default_img" />
+
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">  -->
+
+            <TextView
+                android:id="@+id/product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal">-->
+                android:layout_marginTop="10dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:text="@string/demo_leather_shoes"
+                android:textColor="#000000"
+                android:textSize="20sp" />
 
-                <ImageView
-                    android:id="@+id/image_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:contentDescription="@string/image"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/default_img" />
-           <!-- </FrameLayout>-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="@string/mrp_string"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/mrp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="999"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/qty_sub"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="#ddd"
+                    android:text="@string/minus_sign" />
+
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:background="#ddd"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginEnd="20dp"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="@string/qty"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/qty"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="@string/_1"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/qty_add"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:background="#ddd"
+                    android:text="@string/plus_sign" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#ccc" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                tools:context="com.example.fbulou.swipeem.DetailsActivity"
-                tools:showIn="@layout/activity_details">
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
                 <TextView
-                    android:id="@+id/product_name"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:fontFamily="sans-serif"
-                    android:gravity="center_horizontal"
-                    android:padding="10dp"
-                    android:text="@string/demo_leather_shoes"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Delivery Charges"
                     android:textColor="#000000"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:gravity="center"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="6dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-condensed"
-                        android:text="@string/mrp_string"
-                        android:textColor="#000000"
-                        android:textSize="18sp" />
+                        android:text="Shipping Charges : ₹ " />
 
                     <TextView
-                        android:id="@+id/mrp"
+                        android:id="@+id/shipping_charges"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="999"
-                        android:textColor="#000000"
-                        android:textSize="18sp"
-                        android:textStyle="italic" />
+                        android:text="49" />
+
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <Button
-                        android:id="@+id/qty_sub"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        android:background="#ddd"
-                        android:text="@string/minus_sign" />
-
-                    <LinearLayout
-                        android:layout_width="120dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginStart="5dp"
-                        android:background="#ddd"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="20dp"
-                            android:layout_marginStart="10dp"
-                            android:gravity="center"
-                            android:padding="10dp"
-                            android:text="@string/qty"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/qty"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:padding="10dp"
-                            android:text="@string/_1"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <Button
-                        android:id="@+id/qty_add"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        android:background="#ddd"
-                        android:text="@string/plus_sign" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#ccc" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif-condensed"
-                        android:text="Delivery Charges"
-                        android:textColor="#000000"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginTop="6dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Shipping Charges : ₹ " />
-
-                        <TextView
-                            android:id="@+id/shipping_charges"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="49" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Cash On Delivery : " />
-
-                        <TextView
-                            android:id="@+id/cash_on_delivery"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Yes" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:background="#ccc" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
+                        android:text="Cash On Delivery : " />
 
                     <TextView
+                        android:id="@+id/cash_on_delivery"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="6dp"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif-condensed"
-                        android:text="Description"
-                        android:textColor="#000000"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/description_detail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
-                        android:text="@string/lorem_ipsum" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginTop="6dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-
-                            android:gravity="end"
-                            android:text="Brand"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            style="@style/BoldBlack"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:gravity="center"
-                            android:text=":" />
-
-                        <TextView
-                            android:id="@+id/brand"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.4"
-                            android:text="Demo Brand" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-
-                            android:gravity="end"
-                            android:text="Material"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            style="@style/BoldBlack"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:gravity="center"
-                            android:text=":" />
-
-                        <TextView
-                            android:id="@+id/material"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.4"
-                            android:text="Demo Cotton" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-
-                            android:gravity="end"
-                            android:text="Gender"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            style="@style/BoldBlack"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:gravity="center"
-                            android:text=":" />
-
-                        <TextView
-                            android:id="@+id/gender"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.4"
-                            android:text="Demo Men" />
-
-                    </LinearLayout>
+                        android:text="Yes" />
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="#ccc" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="sans-serif-condensed"
-                        android:text="Shipping Details"
-                        android:textColor="#000000"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="40dp"
-                        android:layout_marginTop="6dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="end"
-                            android:text="Estimated Arrival"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            style="@style/BoldBlack"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:gravity="center"
-                            android:text=":" />
-
-                        <TextView
-                            android:id="@+id/estimated_arrival"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1.4"
-                            android:text="Demo 5-6 days" />
-
-                    </LinearLayout>
-                </LinearLayout>
-
-
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#ccc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Description"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/description_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/lorem_ipsum" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:gravity="end"
+                        android:text="Brand"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/BoldBlack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/brand"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="Demo Brand" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:gravity="end"
+                        android:text="Material"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/BoldBlack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/material"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="Demo Cotton" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+
+                        android:gravity="end"
+                        android:text="Gender"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/BoldBlack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/gender"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="Demo Men" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#ccc" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-condensed"
+                    android:text="Shipping Details"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginTop="6dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="Estimated Arrival"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/BoldBlack"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:gravity="center"
+                        android:text=":" />
+
+                    <TextView
+                        android:id="@+id/estimated_arrival"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.4"
+                        android:text="Demo 5-6 days" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
         </LinearLayout>
 
     </ScrollView>
 
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/btn_buy_ripple"
-        app:mrl_rippleColor="@android:color/white"
-        app:mrl_rippleDuration="200"
-        app:mrl_rippleOverlay="true">
-
-        <Button
-            android:id="@+id/btn_buy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#c2ff0000"
-            android:padding="20dp"
-            android:text="@string/buy_now_for_999"
-            android:textAllCaps="false"
-            android:textColor="#fff"
-            android:textSize="20sp" />
-    </com.balysv.materialripple.MaterialRippleLayout>
 
 </RelativeLayout>

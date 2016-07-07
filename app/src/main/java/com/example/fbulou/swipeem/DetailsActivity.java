@@ -1,7 +1,10 @@
 package com.example.fbulou.swipeem;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -44,9 +47,13 @@ public class DetailsActivity extends AppCompatActivity {
 
         ActivityTransition.with(getIntent()).to(findViewById(R.id.image_detail)).duration(400).start(savedInstanceState);
 
+        setupTitleWhenCollapsed();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Instance = this;
+
+
         //Adding font
         ChangeMyToolbarFont.apply(this, getAssets(), toolbar, "Courgette-Regular.otf");
 
@@ -132,6 +139,37 @@ public class DetailsActivity extends AppCompatActivity {
 
         assignProductValues();
     }
+
+    private void setupTitleWhenCollapsed() {    //sets CollapsingToolbarLayout title visible only when it is collapsed.
+        //Here it is visible when it scrim starts (and fab goes away)
+
+        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar_layout);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+
+        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/" + "Courgette-Regular.otf");
+        collapsingToolbarLayout.setCollapsedTitleTypeface(custom_font);
+        collapsingToolbarLayout.setExpandedTitleTypeface(custom_font);
+
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isShow = false;
+            int bottomPx = -1;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (bottomPx == -1) {
+                    bottomPx = appBarLayout.getBottom();
+                }
+                if (bottomPx + verticalOffset <= collapsingToolbarLayout.getScrimVisibleHeightTrigger()) {
+                    collapsingToolbarLayout.setTitle("Product Details");
+                    isShow = true;
+                } else if (isShow) {
+                    collapsingToolbarLayout.setTitle("");
+                    isShow = false;
+                }
+            }
+        });
+    }
+
 
     void assignProductValues() {
         Intent intent = getIntent();
