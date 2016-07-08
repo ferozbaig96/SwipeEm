@@ -3,14 +3,12 @@ package com.example.fbulou.swipeem;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +17,6 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.kogitune.activity_transition.ActivityTransitionLauncher;
-import com.transitionseverywhere.Explode;
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionManager;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -159,58 +153,37 @@ public class WishlistActivity extends AppCompatActivity {
     public void onClicked(int position, final View view) {
         //TODO get primary key to find the data. pk from fn(String pk)
 
-        final Intent intent = new Intent(WishlistActivity.this, DetailsActivity.class);
-        intent.putExtra("imagePath", productList.get(position).path);
-        intent.putExtra("title", productList.get(position).desc);
-        intent.putExtra("currentWishlistPosition", position);
+        // startExplosion(position, view);
 
-        // save rect of view in screen coordinates
-        final Rect viewRect = new Rect();
-        view.getGlobalVisibleRect(viewRect);
-
-        // create Explode transition with epicenter
-        Transition explode = new Explode()
-                .setEpicenterCallback(new Transition.EpicenterCallback() {
-                    @Override
-                    public Rect onGetEpicenter(Transition transition) {
-                        return viewRect;
-                    }
-                });
-        explode.setDuration(350);
-
-        explode.addListener(new Transition.TransitionListener() {
-            @Override
-            public void onTransitionStart(Transition transition) {
-                Log.e("TAG", "Explode Transition Start in WishlistActivity");
-            }
-
-            @Override
-            public void onTransitionEnd(Transition transition) {
-                ActivityTransitionLauncher.with(WishlistActivity.this).from(view).launch(intent);
-                Log.e("TAG", "Explode Transition End in  WishlistActivity");
-            }
-
-            @Override
-            public void onTransitionCancel(Transition transition) {
-            }
-
-            @Override
-            public void onTransitionPause(Transition transition) {
-
-            }
-
-            @Override
-            public void onTransitionResume(Transition transition) {
-            }
-        });
-
-        TransitionManager.beginDelayedTransition(mRecyclerView, explode);
-        // remove all views from Recycler View
-        mRecyclerView.setAdapter(null);
+        sendSharedTransition(position, view);
 
 
         // startActivity(intent);
         //  ActivityTransitionLauncher.with(WishlistActivity.this).from(view).launch(intent);
+    }
+
+    void sendSharedTransition(int position, View view) {
+        Intent intent = new Intent(Instance, DetailsActivity.class);
+        intent.putExtra("imagePath", productList.get(position).path);
+        intent.putExtra("title", productList.get(position).desc);
+        intent.putExtra("currentWishlistPosition", position);
+
+        int[] screenLocation = new int[2];
+        view.getLocationOnScreen(screenLocation);
+        int left, top, width, height;
+
+        left = screenLocation[0];
+        top = screenLocation[1];
+        width = view.getWidth();
+        height = view.getHeight();
+
+        intent.putExtra("left", left);
+        intent.putExtra("top", top);
+        intent.putExtra("width", width);
+        intent.putExtra("height", height);
+
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     public List<Information> loadWishlistPref() {       //loads wishlist products

@@ -10,13 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.kogitune.activity_transition.ActivityTransition;
 
 import java.util.List;
 
@@ -24,6 +26,11 @@ public class DetailsActivity extends AppCompatActivity {
 
     static DetailsActivity Instance;
     Menu mMenu;
+
+    //For SharedTransition
+    int top, left, width, height;
+    int leftDelta, topDelta;
+    float widthScale, heightScale;
 
     int currentWishlistPosition;
     ImageView image;
@@ -45,17 +52,13 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        ActivityTransition.with(getIntent()).to(findViewById(R.id.image_detail)).duration(400).start(savedInstanceState);
+        // ActivityTransition.with(getIntent()).to(findViewById(R.id.image_detail)).duration(400).start(savedInstanceState);
 
         setupTitleWhenCollapsed();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Instance = this;
-
-
-        //Adding font
-        ChangeMyToolbarFont.apply(this, getAssets(), toolbar, "Courgette-Regular.otf");
 
       /*  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +70,6 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });*/
 
-        assert getSupportActionBar() != null;
-        getSupportActionBar().setTitle("Product Details");
-
-        //TODO get and set image via url using Glide
         image = (ImageView) findViewById(R.id.image_detail);
 
         description = (TextView) findViewById(R.id.description_detail);
@@ -136,8 +135,68 @@ public class DetailsActivity extends AppCompatActivity {
             }
         });
 
-
+        makeImageSquare();
+        receiveSharedTransition();
         assignProductValues();
+    }
+
+    void makeImageSquare() {
+        ViewGroup.LayoutParams layoutParams = image.getLayoutParams();
+        layoutParams.height = MainActivity.Instance.getEffectiveWidth();
+        image.setLayoutParams(layoutParams);
+    }
+
+    private void receiveSharedTransition() {
+        Intent intent = getIntent();
+        top = intent.getIntExtra("top", 0);
+        left = intent.getIntExtra("left", 0);
+        width = intent.getIntExtra("width", 0);
+        height = intent.getIntExtra("height", 0);
+        onUiReady(image);
+    }
+
+    public void onUiReady(final View view) {
+        view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+
+                view.getViewTreeObserver().removeOnPreDrawListener(this);
+                prepareScene(view);
+                runEnterAnimation(view);
+                return true;
+            }
+        });
+    }
+
+    private void prepareScene(View view) {
+        //Scale the destination view to be the same size as the original view
+        widthScale = (float) width / view.getWidth();
+        heightScale = (float) height / view.getHeight();
+        view.setScaleX(widthScale);
+        view.setScaleY(heightScale);
+
+        //Position the destination view where the original view was
+        int[] screenLocation = new int[2];
+        view.getLocationOnScreen(screenLocation);
+
+        leftDelta = left - screenLocation[0];
+        topDelta = top - screenLocation[1];
+        view.setTranslationX(leftDelta);
+        view.setTranslationY(topDelta);
+    }
+
+    private void runEnterAnimation(View view) {
+        //Now simply animate to the default positions
+
+        view.animate()
+                .setDuration(250)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .scaleX(1)
+                .scaleY(1)
+                .translationX(0)
+                .translationY(0)
+                .start();
+
     }
 
     private void setupTitleWhenCollapsed() {    //sets CollapsingToolbarLayout title visible only when it is collapsed.
@@ -170,6 +229,32 @@ public class DetailsActivity extends AppCompatActivity {
         });
     }
 
+   /* @Override
+    public void onBackPressed() {
+
+        runExitAnimation(image);
+    }
+*/
+    //todo remove
+    private void runExitAnimation(View view) {
+        view.animate()
+                .setDuration(250)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .scaleX(widthScale)
+                .scaleY(heightScale)
+                .translationX(leftDelta)
+                .translationY(topDelta)
+                .withEndAction(new Runnable() {
+                    @Override
+                    public void run() {
+                        //now we can finish the actvity
+                        finish();
+                        overridePendingTransition(0, 0);
+                    }
+                })
+                .start();
+
+    }
 
     void assignProductValues() {
         Intent intent = getIntent();
