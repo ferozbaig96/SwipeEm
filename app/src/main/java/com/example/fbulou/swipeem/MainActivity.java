@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
         display.getSize(size);
         int totalHeight = size.y;
 
-        return totalHeight - getStatusbarHeight();
+        return totalHeight - getStatusbarHeight() - toolbarHeight;
     }
 
     public int getEffectiveWidth() {
@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_wishlist) {
 
-            SupportAnimator animator = showFullCircularReveal(y, 400, true, true, false);
+            SupportAnimator animator = showFullCircularReveal(y, 300, true, true, false);
             animator.addListener(new SupportAnimator.AnimatorListener() {
                 @Override
                 public void onAnimationStart() {
@@ -412,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd() {
                     startActivity(new Intent(Instance, WishlistActivity.class));
+                    overridePendingTransition(0,0);
                 }
 
                 @Override

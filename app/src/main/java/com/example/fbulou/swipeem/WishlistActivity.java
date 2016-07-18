@@ -307,7 +307,7 @@ public class WishlistActivity extends AppCompatActivity {
     }
 
     private void back() {
-        SupportAnimator animator = MainActivity.Instance.showFullCircularReveal(MainActivity.Instance.y, 400, false, true, false);
+        SupportAnimator animator = MainActivity.Instance.showFullCircularReveal(MainActivity.Instance.y, 300, false, true, false);
         animator.addListener(new SupportAnimator.AnimatorListener() {
             @Override
             public void onAnimationStart() {
