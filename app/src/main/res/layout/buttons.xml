@@ -7,39 +7,6 @@
     android:layout_marginBottom="5dp"
     android:orientation="horizontal">
 
-    <!--<FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="50dp">
-
-        <com.like.LikeButton
-            android:id="@+id/left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:anim_scale_factor="1.5"
-            app:icon_size="48dp"
-
-            app:like_drawable="@drawable/circle_cross_icon"
-            app:unlike_drawable="@drawable/circle_cross_icon" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <com.like.LikeButton
-            android:id="@+id/right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:anim_scale_factor="1.5"
-            app:icon_size="48dp"
-            app:icon_type="heart"
-
-            app:like_drawable="@drawable/heart_icon"
-            app:unlike_drawable="@drawable/heart_icon" />
-    </FrameLayout>
--->
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/left"
         android:layout_width="0dp"

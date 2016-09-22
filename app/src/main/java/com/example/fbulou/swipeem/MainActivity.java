@@ -26,8 +26,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.like.LikeButton;
-import com.like.OnLikeListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.lang.reflect.Type;
@@ -218,22 +216,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       /* right.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-                unLiked(likeButton);
-            }
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
-                likeButton.setLiked(true);
-                flingContainer.getTopCardListener().selectRight();
-
-                View view = flingContainer.getSelectedView();
-                view.findViewById(R.id.item_swipe_left_indicator).setAlpha(1);
-            }
-        });*/
-
         right.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -243,23 +225,6 @@ public class MainActivity extends AppCompatActivity {
                 v.findViewById(R.id.item_swipe_left_indicator).setAlpha(1);
             }
         });
-
-
-       /* left.setOnLikeListener(new OnLikeListener() {
-            @Override
-            public void liked(LikeButton likeButton) {
-                unLiked(likeButton);
-            }
-
-            @Override
-            public void unLiked(LikeButton likeButton) {
-                likeButton.setLiked(true);
-                flingContainer.getTopCardListener().selectLeft();
-
-                View view = flingContainer.getSelectedView();
-                view.findViewById(R.id.item_swipe_right_indicator).setAlpha(1);
-            }
-        });*/
 
         left.setOnClickListener(new View.OnClickListener() {
             @Override

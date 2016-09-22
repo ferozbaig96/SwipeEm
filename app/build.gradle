@@ -39,8 +39,6 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.0.0'
     //CardView
     compile 'com.android.support:cardview-v7:24.0.0'
-    //LikeButton
-    compile 'com.github.jd-alexander:LikeButton:0.2.0'
     //PhotoView
     compile 'com.github.chrisbanes:PhotoView:1.2.6'
     //GSON
