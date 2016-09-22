@@ -59,5 +59,4 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     //Volley
     compile 'com.mcxiaoke.volley:library-aar:1.0.0'
-
 }
