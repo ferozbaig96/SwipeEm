@@ -7,7 +7,7 @@
     android:layout_marginBottom="5dp"
     android:orientation="horizontal">
 
-    <FrameLayout
+    <!--<FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="50dp">
@@ -38,5 +38,36 @@
             app:like_drawable="@drawable/heart_icon"
             app:unlike_drawable="@drawable/heart_icon" />
     </FrameLayout>
+-->
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_clear_grey_600_24dp"
+        app:backgroundTint="@android:color/white"
+        app:borderWidth="0dp"
+        app:elevation="6dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/undo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_undo_grey_600_24dp"
+        app:backgroundTint="@android:color/white"
+        app:borderWidth="0dp"
+        app:elevation="6dp"
+        app:fabSize="mini" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/right"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:src="@drawable/ic_favorite_grey_600_24dp"
+        app:backgroundTint="@android:color/white"
+        app:borderWidth="0dp"
+        app:elevation="6dp" />
 </LinearLayout>

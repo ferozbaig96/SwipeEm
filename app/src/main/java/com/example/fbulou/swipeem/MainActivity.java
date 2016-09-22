@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     static int page = 0;
     ArrayList<Data> al;
 
-    LikeButton left, right;
+    FloatingActionButton left, right;
     public static MyAppAdapter myAppAdapter;
     public static MyViewHolder viewHolder;
     private SwipeFlingAdapterView flingContainer;
@@ -73,8 +74,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
-        left = (LikeButton) findViewById(R.id.left);
-        right = (LikeButton) findViewById(R.id.right);
+        left = (FloatingActionButton) findViewById(R.id.left);
+        right = (FloatingActionButton) findViewById(R.id.right);
         y = findViewById(R.id.y);
 
         showSwipeCards();
@@ -217,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        right.setOnLikeListener(new OnLikeListener() {
+       /* right.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
                 unLiked(likeButton);
@@ -231,10 +232,20 @@ public class MainActivity extends AppCompatActivity {
                 View view = flingContainer.getSelectedView();
                 view.findViewById(R.id.item_swipe_left_indicator).setAlpha(1);
             }
+        });*/
+
+        right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flingContainer.getTopCardListener().selectRight();
+
+                View v = flingContainer.getSelectedView();
+                v.findViewById(R.id.item_swipe_left_indicator).setAlpha(1);
+            }
         });
 
 
-        left.setOnLikeListener(new OnLikeListener() {
+       /* left.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
                 unLiked(likeButton);
@@ -247,6 +258,16 @@ public class MainActivity extends AppCompatActivity {
 
                 View view = flingContainer.getSelectedView();
                 view.findViewById(R.id.item_swipe_right_indicator).setAlpha(1);
+            }
+        });*/
+
+        left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flingContainer.getTopCardListener().selectLeft();
+
+                View v = flingContainer.getSelectedView();
+                v.findViewById(R.id.item_swipe_right_indicator).setAlpha(1);
             }
         });
 
@@ -412,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd() {
                     startActivity(new Intent(Instance, WishlistActivity.class));
-                    overridePendingTransition(0,0);
+                    overridePendingTransition(0, 0);
                 }
 
                 @Override
